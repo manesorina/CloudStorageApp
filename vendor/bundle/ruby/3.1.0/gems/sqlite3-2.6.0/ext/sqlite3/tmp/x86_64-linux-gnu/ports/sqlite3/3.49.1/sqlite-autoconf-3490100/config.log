@@ -1,0 +1,89 @@
+Invoked as: ./configure --host=x86_64-linux-gnu --enable-static --disable-shared --disable-shared --enable-static --enable-fts5 CC=x86_64-linux-gnu-gcc "CFLAGS=-fPIC -O2 -fvisibility=hidden -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_USE_URI=1 -DSQLITE_ENABLE_DBPAGE_VTAB=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1" --prefix=/home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1
+Tclsh: /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ext/sqlite3/tmp/x86_64-linux-gnu/ports/sqlite3/3.49.1/sqlite-autoconf-3490100/jimsh0
+Failed: x86_64-linux-gnu-gcc -fPIC -O2 -fvisibility=hidden -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_USE_URI=1 -DSQLITE_ENABLE_DBPAGE_VTAB=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1 conftest__.c -o conftest__
+/usr/bin/ld: /tmp/ccCGYr8F.o: in function `main':
+conftest__.c:(.text.startup+0x5): undefined reference to `localtime_s'
+collect2: error: ld returned 1 exit status
+============
+The failed code was:
+extern void localtime_s(void);
+int main(void) {
+localtime_s();
+return 0;
+}
+============
+Failed: x86_64-linux-gnu-gcc -fPIC -O2 -fvisibility=hidden -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_USE_URI=1 -DSQLITE_ENABLE_DBPAGE_VTAB=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1 conftest__.c -o conftest__
+/usr/bin/ld: /tmp/cc7ehiO0.o: in function `main':
+conftest__.c:(.text.startup+0x5): undefined reference to `deflate'
+collect2: error: ld returned 1 exit status
+============
+The failed code was:
+extern void deflate(void);
+int main(void) {
+deflate();
+return 0;
+}
+============
+Failed: x86_64-linux-gnu-gcc -c -rpath /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/lib -fPIC -O2 -fvisibility=hidden -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_USE_URI=1 -DSQLITE_ENABLE_DBPAGE_VTAB=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1 conftest__.c -o conftest__.o
+x86_64-linux-gnu-gcc: error: unrecognized command-line option ‘-rpath’
+============
+The failed code was:
+int main(void) {
+
+return 0;
+}
+============
+Failed: x86_64-linux-gnu-gcc -fPIC -O2 -fvisibility=hidden -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_USE_URI=1 conftest__.c -o conftest__
+/usr/bin/ld: /tmp/ccKDKyHB.o: in function `main':
+conftest__.c:(.text.startup+0x5): undefined reference to `tgetent'
+collect2: error: ld returned 1 exit status
+============
+The failed code was:
+extern void tgetent(void);
+int main(void) {
+tgetent();
+return 0;
+}
+============
+Failed: x86_64-linux-gnu-gcc -fPIC -O2 -fvisibility=hidden -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_USE_URI=1 conftest__.c -o conftest__ -lreadline
+/usr/bin/ld: /tmp/cct9IQRq.o: in function `main':
+conftest__.c:(.text.startup+0x5): undefined reference to `tgetent'
+collect2: error: ld returned 1 exit status
+============
+The failed code was:
+extern void tgetent(void);
+int main(void) {
+tgetent();
+return 0;
+}
+============
+Failed: x86_64-linux-gnu-gcc -fPIC -O2 -fvisibility=hidden -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_USE_URI=1 conftest__.c -o conftest__ -lncurses
+/usr/bin/ld: /tmp/ccashn4l.o: in function `main':
+conftest__.c:(.text.startup+0x5): undefined reference to `readline'
+collect2: error: ld returned 1 exit status
+============
+The failed code was:
+extern void readline(void);
+int main(void) {
+readline();
+return 0;
+}
+============
+Failed: x86_64-linux-gnu-gcc -fPIC -O2 -fvisibility=hidden -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_USE_URI=1 conftest__.c -o conftest__
+conftest__.c:1:13: warning: conflicting types for built-in function ‘ceil’; expected ‘double(double)’ [-Wbuiltin-declaration-mismatch]
+    1 | extern void ceil(void);
+      |             ^~~~
+conftest__.c:1:1: note: ‘ceil’ is declared in header ‘<math.h>’
+  +++ |+#include <math.h>
+    1 | extern void ceil(void);
+/usr/bin/ld: /tmp/ccLJyo0m.o: in function `main':
+conftest__.c:(.text.startup+0x5): undefined reference to `ceil'
+collect2: error: ld returned 1 exit status
+============
+The failed code was:
+extern void ceil(void);
+int main(void) {
+ceil();
+return 0;
+}
+============

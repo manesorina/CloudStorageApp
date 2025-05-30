@@ -1,0 +1,10 @@
+x86_64-linux-gnu-gcc -c /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ext/sqlite3/tmp/x86_64-linux-gnu/ports/sqlite3/3.49.1/sqlite-autoconf-3490100/sqlite3.c -o sqlite3.o -fPIC -O2 -fvisibility=hidden -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_USE_URI=1  -I. -fPIC  -DSQLITE_ENABLE_DBPAGE_VTAB=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_FTS5 -DSQLITE_ENABLE_MATH_FUNCTIONS -DSQLITE_THREADSAFE=1
+x86_64-linux-gnu-gcc -o libsqlite3.so  sqlite3.o -shared \
+	 -Wl,-rpath,/home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/lib  -lm  -lz    \
+	 
+x86_64-linux-gnu-ar cr libsqlite3.a sqlite3.o
+x86_64-linux-gnu-gcc -o sqlite3 \
+	/home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ext/sqlite3/tmp/x86_64-linux-gnu/ports/sqlite3/3.49.1/sqlite-autoconf-3490100/shell.c /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ext/sqlite3/tmp/x86_64-linux-gnu/ports/sqlite3/3.49.1/sqlite-autoconf-3490100/sqlite3.c -Wl,-rpath,/home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/lib  -lm  -lz    \
+	-I. -DSQLITE_ENABLE_DBPAGE_VTAB=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_FTS5 -DSQLITE_ENABLE_MATH_FUNCTIONS -DSQLITE_THREADSAFE=1 -DHAVE_READLINE=1 -DSQLITE_HAVE_ZLIB=1 \
+	-fPIC -O2 -fvisibility=hidden -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_USE_URI=1  -I/usr/include  \
+	 -lreadline -lncurses

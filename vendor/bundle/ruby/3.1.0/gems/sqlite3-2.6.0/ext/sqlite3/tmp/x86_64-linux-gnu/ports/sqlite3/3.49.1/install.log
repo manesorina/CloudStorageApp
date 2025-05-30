@@ -1,0 +1,10 @@
++ /usr/bin/install -d /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/lib
+/usr/bin/install -m 0644 libsqlite3.a "/home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/lib"
++ /usr/bin/install -d /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/bin
+/usr/bin/install -s sqlite3 "/home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/bin"
++ /usr/bin/install -d /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/include
+/usr/bin/install -m 0644 /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ext/sqlite3/tmp/x86_64-linux-gnu/ports/sqlite3/3.49.1/sqlite-autoconf-3490100/sqlite3.h /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ext/sqlite3/tmp/x86_64-linux-gnu/ports/sqlite3/3.49.1/sqlite-autoconf-3490100/sqlite3ext.h "/home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/include"
++ /usr/bin/install -d /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/lib/pkgconfig
+/usr/bin/install -m 0644 sqlite3.pc "/home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/lib/pkgconfig"
++ /usr/bin/install -d /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/share/man/man1
+/usr/bin/install -m 0644 /home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ext/sqlite3/tmp/x86_64-linux-gnu/ports/sqlite3/3.49.1/sqlite-autoconf-3490100/sqlite3.1 "/home/so17/web/my_cloud/vendor/bundle/ruby/3.1.0/gems/sqlite3-2.6.0/ports/x86_64-linux-gnu/sqlite3/3.49.1/share/man/man1"

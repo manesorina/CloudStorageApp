@@ -1,0 +1,327 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="mb-1">My Files</h2>
+      <p class="text-muted">Manage and organize your uploaded files</p>
+    </div>
+  </div>
+
+
+  <!-- Files Display Container -->
+  <div class="row">
+    <div class="col-12">
+      <div class="files-container p-4 mb-4 border rounded shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">
+            <i class="fas fa-folder-open me-2"></i>
+            Files <span class="badge bg-secondary" id="file-count"><%= @file_uploads.count %></span>
+          </h5>
+        </div>
+
+        <!-- Files Grid -->
+        <div class="row g-3" id="files-grid">
+          <% if @file_uploads.any? %>
+            <% @file_uploads.each do |upload| %>
+              <div id="file-<%= upload.id %>" class="col-md-4 col-sm-6">
+                <div class="file-item p-3 border rounded bg-light">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="file-icon me-3">
+                      <i class="fas fa-file fa-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                      <h6 class="mb-1"><%= upload.title %></h6>
+                      <small class="text-muted">
+                        <% if upload.uploaded_file.attached? %>
+                          <%= number_to_human_size(upload.uploaded_file.byte_size) %> • 
+                        <% end %>
+                        <%= time_ago_in_words(upload.created_at) %> ago
+                      </small>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex gap-2 flex-wrap">
+                    <% if upload.uploaded_file.attached? %>
+
+                      <a href="<%= rails_blob_path(upload.uploaded_file, disposition: 'attachment') %>" 
+                         class="btn btn-sm btn-outline-primary flex-fill"
+                         download="<%= upload.uploaded_file.filename %>">
+                        <i class="fas fa-download me-1"></i> Download
+                      </a>
+
+                      <a href="<%= rails_blob_path(upload.uploaded_file, disposition: 'inline') %>" 
+                         target="_blank"
+                         class="btn btn-sm btn-outline-secondary flex-fill">
+                        <i class="fas fa-eye me-1"></i> Preview
+                      </a>
+                    <% end %>
+
+                    <button class="btn btn-sm btn-outline-danger flex-fill delete-file-btn" 
+                            data-file-id="<%= upload.id %>"
+                            data-file-title="<%= upload.title %>">
+                      <i class="fas fa-trash me-1"></i> Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="col-12" id="empty-state">
+              <div class="empty-state text-center p-4 border rounded bg-light">
+                <i class="fas fa-cloud-upload-alt fa-3x text-muted"></i>
+                <h5 class="mt-3">No files uploaded yet</h5>
+                <p>Upload your first file to get started</p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Upload Section -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Upload a File</h5>
+
+          <%= form_with(model: @file_upload, url: files_path, local: true, html: { multipart: true, id: "upload-form" }) do |form| %>
+            <% if @file_upload.errors.any? %>
+              <div class="alert alert-danger">
+                <ul class="mb-0">
+                  <% @file_upload.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div id="drop-area" class="border border-2 border-dashed rounded p-4 text-center mb-3 position-relative" style="cursor: pointer; background-color: #f9f9f9;">
+              <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-2"></i>
+              <p class="mb-2">Drag & drop a file here, or</p>
+              <label class="btn btn-outline-primary mb-0">
+                Browse File
+                <%= form.file_field :uploaded_file, class: "d-none", id: "file-input" %>
+              </label>
+              <p id="file-name" class="mt-2 text-muted"></p>
+              <button type="button" id="clear-file" class="clear-file-btn btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 d-none" aria-label="Clear file">&times;</button>
+            </div>
+
+            <div class="form-group mb-3">
+              <%= form.label :title, class: "form-label" %>
+              <%= form.text_field :title, class: "form-control", placeholder: "Optional: Defaults to file name", id: "title-input" %>
+            </div>
+
+            <%= form.submit "Upload File", class: "btn btn-primary w-100" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+const dropArea = document.getElementById("drop-area");
+  const fileInput = document.getElementById("file-input");
+  const fileNameDisplay = document.getElementById("file-name");
+  const titleInput = document.getElementById("title-input");
+  const clearButton = document.getElementById("clear-file");
+
+  dropArea.addEventListener("click", (e) => {
+  const target = e.target;
+  if (
+    target.closest("label") ||  
+    target.id === "file-input" || 
+    target.id === "clear-file"
+  ) {
+    return;
+  }
+
+  fileInput.click();
+});
+
+
+ // Drag and drop handlers
+  dropArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropArea.classList.add("bg-light", "border-primary");
+  });
+
+  dropArea.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropArea.classList.remove("bg-light", "border-primary");
+  });
+
+  dropArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    dropArea.classList.remove("bg-light", "border-primary");
+
+    if (e.dataTransfer.files.length > 0) {
+      const droppedFile = e.dataTransfer.files[0];
+
+      // Create a new FileList with a real input clone
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(droppedFile);
+      fileInput.files = dataTransfer.files;
+
+      updatePreview();
+    }
+  });
+
+
+
+
+  fileInput.addEventListener("change", updatePreview);
+
+  clearButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    fileInput.value = "";
+    fileNameDisplay.textContent = "";
+    titleInput.value = "";
+    clearButton.classList.add("d-none");
+  });
+
+  function updatePreview() {
+    const file = fileInput.files[0];
+    if (file) {
+      fileNameDisplay.textContent = `Selected: ${file.name}`;
+      if (!titleInput.value) {
+        titleInput.value = file.name.replace(/\.[^/.]+$/, "");
+      }
+      clearButton.classList.remove("d-none");
+    }
+  }
+
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.delete-file-btn')) {
+      const button = e.target.closest('.delete-file-btn');
+      const fileId = button.dataset.fileId;
+      const fileTitle = button.dataset.fileTitle;
+      
+      showDeleteConfirmation(fileTitle, () => {
+        fetch(`/files/${fileId}`, {
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            const fileElement = document.getElementById(`file-${fileId}`);
+            if (fileElement) {
+              fileElement.remove();
+            }
+            
+            const countBadge = document.getElementById('file-count');
+            if (countBadge) {
+              const currentCount = parseInt(countBadge.textContent);
+              countBadge.textContent = currentCount - 1;
+            }
+            
+            const filesGrid = document.getElementById('files-grid');
+            if (filesGrid && filesGrid.children.length === 0) {
+              filesGrid.innerHTML = `
+                <div class="col-12" id="empty-state">
+                  <div class="empty-state text-center p-4 border rounded bg-light">
+                    <i class="fas fa-cloud-upload-alt fa-3x text-muted"></i>
+                    <h5 class="mt-3">No files uploaded yet</h5>
+                    <p>Upload your first file to get started</p>
+                  </div>
+                </div>
+              `;
+            }
+            
+            showMessage(data.message, 'success');
+          } else {
+            showMessage(data.message || 'Failed to delete file', 'danger');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          showMessage('An error occurred while deleting the file', 'danger');
+        });
+      });
+    }
+  });
+
+  function showDeleteConfirmation(fileName, onConfirm) {
+    const existingModal = document.getElementById('deleteModal');
+    if (existingModal) {
+      existingModal.remove();
+    }
+
+    const modalHTML = `
+      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header border-0 pb-2">
+              <h5 class="modal-title" id="deleteModalLabel">
+                <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                Confirm Delete
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0">
+              <p class="mb-0">Are you sure you want to delete <strong>"${fileName}"</strong>?</p>
+              <small class="text-muted">This action cannot be undone.</small>
+            </div>
+            <div class="modal-footer border-0 pt-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <i class="fas fa-times me-1"></i> Cancel
+              </button>
+              <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                <i class="fas fa-trash me-1"></i> Delete File
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    const modal = document.getElementById('deleteModal');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    
+    const bsModal = new bootstrap.Modal(modal);
+    bsModal.show();
+    
+    confirmBtn.addEventListener('click', () => {
+      bsModal.hide();
+      onConfirm();
+    });
+    
+    modal.addEventListener('hidden.bs.modal', () => {
+      modal.remove();
+    });
+  }
+
+  function showMessage(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+      <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    `;
+    
+    const container = document.querySelector('.container');
+    const header = container.querySelector('.row.mb-4');
+    container.insertBefore(alertDiv, header.nextSibling);
+    
+    setTimeout(() => {
+      if (alertDiv && alertDiv.parentNode) {
+        const alert = new bootstrap.Alert(alertDiv);
+        alert.close();
+      }
+    }, 5000);
+  }
+});
+</script>
